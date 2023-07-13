@@ -70,6 +70,30 @@ app.delete('/api/persons/:id', (request,response) => {
   
 })
 
+app.post('/api/persons', (request,response) => {
+
+  console.log(request.body)
+
+  const body = request.body
+
+  // console.log(body)
+
+  if (!body.name || !body.number) {
+    return response.status(400).json({ 
+      error: 'person needs a name and a number' 
+    })
+  }
+
+  const newPerson = {
+    id: Math.floor(Math.random()*1000000),
+    name: body.name,
+    number: body.number
+  }
+
+  persons = persons.concat(newPerson)
+  response.json(newPerson)
+})
+
 
 const PORT = 3001
 app.listen(PORT, () => {
