@@ -1,7 +1,28 @@
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
 
+
 app.use(express.json())
+
+
+morgan.token('body', (request,response)=>{
+  return JSON.stringify(request.body)
+})
+
+const respondWithTiny = (request, response) => {
+  return request.method!=="POST"
+}
+
+const respondWithBody = (request,response) => {
+  return request.method==="POST"
+}
+
+// app.use(morgan((tokens, request, response)=>{
+app.use(morgan('tiny',{ skip: respondWithBody }))
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body', {skip: respondWithTiny}))
+
 
 let persons = [
     { 
@@ -27,14 +48,11 @@ let persons = [
 ]
 
 app.get('/api/persons', (request,response) => {
-    console.log("get persons")
     response.json(persons)
 })
 
 app.get('/api/persons/:id', (request,response) => {
     const id = Number(request.params.id)
-
-    console.log(`get person ${id}`)
 
     const person = persons.find(person => person.id===id)
 
@@ -49,8 +67,6 @@ app.get('/api/persons/:id', (request,response) => {
 
 app.get('/info', (request,response) => {
 
-    console.log("get info")
-
     const cur_date = new Date()
 
     const InfoPage = `<div><p>Phonebook has info for ${persons.length} people</p><p>${cur_date}</p></div>`
@@ -62,21 +78,16 @@ app.get('/info', (request,response) => {
 app.delete('/api/persons/:id', (request,response) => {
   const id = Number(request.params.id)
 
-  console.log(`deleting person ${id}`)
-
   persons = persons.filter(person => person.id!==id)
 
   response.status(204).end()
   
 })
 
+
 app.post('/api/persons', (request,response) => {
 
-  console.log(request.body)
-
   const body = request.body
-
-  // console.log(body)
 
   if (!body.name || !body.number) {
     return response.status(400).json({ 
@@ -97,7 +108,9 @@ app.post('/api/persons', (request,response) => {
   }
 
   persons = persons.concat(newPerson)
+
   response.json(newPerson)
+
 })
 
 
