@@ -11,6 +11,7 @@
   "author": "Ryan Harrison",
   "license": "ISC",
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.3.3",
     "nodemon": "^2.0.22"
   },
   "dependencies": {
