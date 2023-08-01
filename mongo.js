@@ -49,10 +49,10 @@ if(createNewNumber){
 }
 else{
 
-    console.log("getting all numbers")
+    console.log("Phonebook:")
     PhoneEntry.find({}).then(result => {
         result.forEach(phoneEntry => {
-            console.log(phoneEntry)
+            console.log(`${phoneEntry.name} ${phoneEntry.number}`)
         })
         mongoose.connection.close()
     })
