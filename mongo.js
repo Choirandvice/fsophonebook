@@ -29,15 +29,15 @@ const url =
 mongoose.set('strictQuery',false)
 mongoose.connect(url)
 
-const phoneNumberSchema = new mongoose.Schema({
+const personSchema = new mongoose.Schema({
     name: String,
     number: String,
 })
 
-const PhoneEntry = mongoose.model('PhoneNumber', phoneNumberSchema)
+const Person = mongoose.model('Person', personSchema)
 
 if(createNewNumber){
-    const newNumber = new PhoneEntry({
+    const newNumber = new Person({
         name:process.argv[3],
         number:process.argv[4]
     })
@@ -50,7 +50,7 @@ if(createNewNumber){
 else{
 
     console.log("Phonebook:")
-    PhoneEntry.find({}).then(result => {
+    Person.find({}).then(result => {
         result.forEach(phoneEntry => {
             console.log(`${phoneEntry.name} ${phoneEntry.number}`)
         })
