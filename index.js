@@ -5,7 +5,6 @@ require('dotenv').config()
 const app = express()
 const Person = require('./models/person')
 
-
 app.use(cors())
 app.use(express.json())
 app.use(express.static('build'))
@@ -81,7 +80,6 @@ app.delete('/api/persons/:id', (request,response,next) => {
     .catch(error => next(error))
 })
 
-
 app.post('/api/persons', (request,response,next) => {
 
   const body = request.body
@@ -99,7 +97,6 @@ app.post('/api/persons', (request,response,next) => {
   .catch(error => next(error))
 
 })
-
 
 app.put('/api/persons/:id', (request, response, next) => {
 

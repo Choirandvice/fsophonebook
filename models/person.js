@@ -2,6 +2,8 @@ const mongoose = require('mongoose')
 
 mongoose.set('strictQuery', false)
 
+const phoneNumberStructure = /^\d{2,3}-\d{1,}$/
+
 const url = process.env.MONGODB_URI
 
 console.log('connecting to MongoDB')
@@ -22,6 +24,13 @@ const personSchema = new mongoose.Schema({
     },
     number: {
       type: String,
+      validate:{
+        validator: function(v) {
+          return phoneNumberStructure.test(v)
+        },
+        message: props => `${props.value} is not valid. Need xx-... or xxx-...`
+      },
+      minLength: 8,
       required: true
     }
 })
